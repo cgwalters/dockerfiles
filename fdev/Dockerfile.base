@@ -1,0 +1,4 @@
+FROM registry.fedoraproject.org/fedora:25
+COPY *.sh /root/
+COPY walters-gpg.txt /usr/share/walters-gpg.txt
+RUN /root/base.sh
