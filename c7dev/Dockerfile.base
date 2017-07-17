@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora:26
+FROM registry.centos.org/centos/centos:7
 COPY *.sh /root/
 COPY walters-gpg.txt /usr/share/walters-gpg.txt
 RUN /root/base.sh
