@@ -6,4 +6,4 @@ RUN su - user /usr/bin/config-user.sh
 USER user
 ENV LANG en_US.UTF-8
 ENTRYPOINT ["/usr/bin/tmux", "-l"]
-LABEL RUN "docker run -ti --privileged -v /srv:/srv:rslave --net=host --name \${NAME} \${IMAGE}"
+LABEL RUN "docker run -ti --privileged -v /srv:/srv:rslave --net=host --name \${NAME} --env CONTAINER_NAME=\${NAME} \${IMAGE}"

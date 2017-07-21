@@ -1,6 +1,6 @@
 #!/bin/sh
 set -xeuo pipefail
-yum -y install yum-utils tmux sudo powerline \
+yum -y install bash-completion yum-utils tmux sudo powerline \
     gcc clang redhat-rpm-config make mock fedpkg \
     libvirt libguestfs-tools strace libguestfs-xfs \
     virt-install curl git kernel hardlink \
