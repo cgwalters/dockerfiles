@@ -6,5 +6,5 @@ yum -y install bash-completion yum-utils tmux sudo powerline \
     virt-install curl git kernel hardlink rsync \
     git-evtag {python3-,}dnf-plugins-core \
     origin-clients ostree{,-grub2} rpm-ostree \
-    jq powerline gdb
+    jq powerline gdb rust
 dnf builddep -y glib2 systemd ostree rpm-ostree
