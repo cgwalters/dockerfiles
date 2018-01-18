@@ -3,6 +3,7 @@ COPY config-root.sh /root/
 COPY config-user.sh /usr/bin
 RUN /root/config-root.sh
 RUN su - user /usr/bin/config-user.sh
+RUN rm -f ~/.bashrc && cd ~user/homegit && make install-dotfiles
 USER user
 ENV LANG en_US.UTF-8
 ENTRYPOINT ["/usr/bin/tmux", "-l"]
