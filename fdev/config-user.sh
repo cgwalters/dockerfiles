@@ -9,3 +9,4 @@ git-evtag verify v2017.1
 rm -f ~/.gitconfig
 rm -f ~/.bash* && make install-dotfiles
 ln -s /srv/walters/src ~/src
+rm -f ~/.gnupg/S.*
