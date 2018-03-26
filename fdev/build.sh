@@ -1,6 +1,7 @@
 #!/bin/sh
 set -xeuo pipefail
-ctr=$(buildah from cgwalters/fdev-base)
+name=$1
+ctr=$(buildah from ${name}-base)
 cleanup () {
     buildah rm ${ctr} || true
 }
@@ -16,8 +17,8 @@ bldr runuser -u walters /tmp/config-user.sh
 bldr rm /tmp/config-user.sh
 bldr /bin/sh -c 'rm -f ~/.bashrc && cd ~walters/homegit && make install-dotfiles'
 # Hack around buildah not accepting arrays for entrypoint
-bldr /bin/sh -c '(echo "#!/bin/sh" && echo "exec runuser -u walters -- chrt --idle 0 dumb-init /usr/bin/tmux -l") > /usr/bin/entrypoint && chmod a+x /usr/bin/entrypoint'
+bldr /bin/sh -c '(echo "#!/bin/sh" && echo "exec setpriv --reuid walters --regid walters --clear-groups -- env HOME=/home/walters chrt --idle 0 dumb-init /usr/bin/tmux -l") > /usr/bin/entrypoint && chmod a+x /usr/bin/entrypoint'
 buildah config --env 'LANG=en_US.UTF-8' \
         --entrypoint /usr/bin/entrypoint ${ctr}
-buildah commit ${ctr} cgwalters/fdev
+buildah commit ${ctr} ${name}
 buildah rm ${ctr}
