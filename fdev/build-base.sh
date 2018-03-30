@@ -2,6 +2,7 @@
 set -xeuo pipefail
 base=$1
 prefix=$2
+tag=$3
 ctr=$(buildah from ${base})
 bldr() {
     buildah run ${ctr} -- "$@"
@@ -20,4 +21,4 @@ bldr yum -y install dumb-init ansible \
 bldr dnf builddep -y glib2 systemd ostree rpm-ostree
 buildah copy ${ctr} *.sh /root/
 buildah copy ${ctr} walters-gpg.txt /usr/share/walters-gpg.txt
-buildah commit ${ctr} ${prefix}-base
+buildah commit ${ctr} ${prefix}-base:${tag}

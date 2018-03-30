@@ -1,7 +1,8 @@
 #!/bin/sh
 set -xeuo pipefail
-name=$1
-ctr=$(buildah from ${name}-base)
+prefix=$1
+tag=$2
+ctr=$(buildah from ${prefix}-base:${tag})
 cleanup () {
     buildah rm ${ctr} || true
 }
@@ -20,5 +21,5 @@ bldr /bin/sh -c 'rm -f ~/.bashrc && cd ~walters/homegit && make install-dotfiles
 bldr /bin/sh -c '(echo "#!/bin/sh" && echo "exec setpriv --reuid walters --regid walters --clear-groups -- env HOME=/home/walters chrt --idle 0 dumb-init /usr/bin/tmux -l") > /usr/bin/entrypoint && chmod a+x /usr/bin/entrypoint'
 buildah config --env 'LANG=en_US.UTF-8' \
         --entrypoint /usr/bin/entrypoint ${ctr}
-buildah commit ${ctr} ${name}
+buildah commit ${ctr} ${prefix}:${tag}
 buildah rm ${ctr}
