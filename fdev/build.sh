@@ -7,16 +7,11 @@ cleanup () {
     buildah rm ${ctr} || true
 }
 trap cleanup ERR
-bldr() {
-    buildah run ${ctr} -- "$@"
-}
-bldr /bin/sh -c 'cp /etc/skel/.bash* /root'
-bldr useradd walters -G wheel,mock
-bldr /bin/sh -c 'echo "walters ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
-buildah copy ${ctr} config-user.sh /tmp/
-bldr runuser -u walters /tmp/config-user.sh
-bldr rm /tmp/config-user.sh
-bldr /bin/sh -c 'rm -f ~/.bashrc && cd ~walters/homegit && make install-dotfiles'
+
+buildah copy ${ctr} user.sh /usr/lib/container/
+buildah run ${ctr} -- useradd walters -G wheel,mock
+buildah run ${ctr} -- /bin/sh -c 'echo "walters ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+buildah run ${ctr} -- runuser -u walters /usr/lib/container/user.sh
 # Hack around buildah not accepting arrays for entrypoint
 buildah copy ${ctr} entrypoint.sh /usr/libexec/container-entrypoint
 buildah config --env 'LANG=en_US.UTF-8' \
