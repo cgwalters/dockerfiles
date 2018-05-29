@@ -25,7 +25,7 @@ esac
 pkgs="dumb-init ansible bash-completion yum-utils tmux sudo powerline \
      gcc clang ccache redhat-rpm-config make mock fedpkg \
      vagrant-libvirt libguestfs-tools strace libguestfs-xfs \
-     virt-install curl git kernel rsync \
+     virt-install curl git kernel rsync awscli \
      git-evtag jq gdb rust golang selinux-policy-targeted"
 if test "${OS_ID}" = fedora; then
     pkgs="$pkgs "$(echo {python3-,}dnf-plugins-core)
