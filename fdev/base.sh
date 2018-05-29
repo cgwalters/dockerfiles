@@ -1,6 +1,8 @@
 #!/bin/sh
 set -xeuo pipefail
 
+dn=$(cd $(dirname $0) && pwd)
+
 # https://pagure.io/fedora-kickstarts/blob/a8e3bf46817ca30f0253b025fcd829a99b1eb708/f/fedora-docker-base.ks#_22
 for f in /etc/dnf/dnf.conf /etc/yum.conf; do
     if test -f ${f}; then
@@ -12,6 +14,12 @@ if test -n "${pkgconf:-}"; then
 fi
 
 OS_ID=$(. /etc/os-release && echo ${ID})
+OS_VER=$(. /etc/os-release && echo ${VERSION_ID})
+
+override_repo="/usr/lib/container/repos/${OS_ID}-${OS_VER}.repo"
+if test -f "${override_repo}"; then
+    cp --reflink=auto "${override_repo}" /etc/yum.repos.d
+fi
 
 case "${OS_ID}" in
     rhel|centos) yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm;
