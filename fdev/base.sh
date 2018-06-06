@@ -30,15 +30,20 @@ case "${OS_ID}" in
     *) pkg_builddep="dnf builddep";;
 esac
 
+case "${OS_ID}" in
+    rhel) yum -y install rhpkg;;
+esac
+
 pkgs="dumb-init ansible bash-completion yum-utils tmux sudo powerline \
      gcc clang ccache redhat-rpm-config make mock fedpkg \
      vagrant-libvirt libguestfs-tools strace libguestfs-xfs \
      virt-install curl git kernel rsync awscli \
-     git-evtag jq gdb rust golang selinux-policy-targeted"
+     git-evtag jq gdb cargo golang selinux-policy-targeted"
 if test "${OS_ID}" = fedora; then
     pkgs="$pkgs "$(echo {python3-,}dnf-plugins-core)
     pkgs="$pkgs origin-clients standard-test-roles"
     pkgs="$pkgs "$(echo ostree{,-grub2} rpm-ostree)
+    pkgs="$pkgs awscli"
 fi
 yum -y install $pkgs
 ${pkg_builddep} -y glib2 systemd
